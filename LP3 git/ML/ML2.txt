@@ -1,0 +1,59 @@
+import pandas as pd
+data=pd.read_csv("emails.csv")
+print(data.head())
+print(data.info())
+print(data['Prediction'].value_counts())
+
+# Separate features and target
+X = data.drop(columns=['Prediction', 'Email No.'])   # features = all word counts
+y = data['Prediction']                               # target = spam(1) / not spam(0)
+
+
+from sklearn.model_selection import train_test_split
+X_train,X_test,y_train,y_test=train_test_split(X,y,test_size=0.2,random_state=42)
+
+from sklearn.neighbors import KNeighborsClassifier
+knn=KNeighborsClassifier(n_neighbors=5)
+knn.fit(X_train,y_train)
+y_pred_knn=knn.predict(X_test)
+
+
+from sklearn.svm import SVC
+svm=SVC(kernel='linear',random_state=42)
+svm.fit(X_train,y_train)
+y_pred_svm=svm.predict(X_test)
+
+from sklearn.metrics import accuracy_score, precision_score,recall_score,f1_score, confusion_matrix
+
+# KNN Metrics
+print("KNN Metrics:")
+print("Accuracy:", accuracy_score(y_test, y_pred_knn))
+print("Precision:", precision_score(y_test, y_pred_knn))
+print("Recall:", recall_score(y_test, y_pred_knn))
+print("F1 Score:", f1_score(y_test, y_pred_knn))
+print("Confusion Matrix:\n", confusion_matrix(y_test, y_pred_knn))
+
+# SVM Metrics
+print("\nSVM Metrics:")
+print("Accuracy:", accuracy_score(y_test, y_pred_svm))
+print("Precision:", precision_score(y_test, y_pred_svm))
+print("Recall:", recall_score(y_test, y_pred_svm))
+print("F1 Score:", f1_score(y_test, y_pred_svm))
+print("Confusion Matrix:\n", confusion_matrix(y_test, y_pred_svm))
+
+
+import matplotlib.pyplot as plt
+
+acc_knn = accuracy_score(y_test, y_pred_knn)
+acc_svm = accuracy_score(y_test, y_pred_svm)
+
+plt.bar(['KNN', 'SVM'], [acc_knn, acc_svm])
+plt.ylabel('Accuracy')
+plt.title('Model Accuracy Comparison')
+plt.show()
+
+print("Conclusion:")
+if acc_knn > acc_svm:
+    print("KNN performed better than SVM.")
+else:
+    print("SVM performed better than KNN.")

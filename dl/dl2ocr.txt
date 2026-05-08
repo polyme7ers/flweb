@@ -16,8 +16,15 @@ from yellowbrick.classifier import ConfusionMatrix
 # 2. Load Dataset
 # ================================
 # Make sure file is in same folder
-dataset = pd.read_csv("2_letter_recognition.data", header=None)
+import pandas as pd
 
+# Dataset URL
+url = "https://archive.ics.uci.edu/ml/machine-learning-databases/letter-recognition/letter-recognition.data"
+
+# Load dataset directly from URL
+dataset = pd.read_csv(url, header=None)
+
+# Display information
 print("Dataset Shape:", dataset.shape)
 print(dataset.head())
 

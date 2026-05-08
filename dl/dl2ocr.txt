@@ -96,3 +96,8 @@ cm = ConfusionMatrix(mlp, classes=classes)
 cm.fit(X_train, Y_train)
 cm.score(X_test, Y_test)
 cm.show()
+
+
+
+
+https://github.com/jackal339/lp5.git
